@@ -1,19 +1,28 @@
 import './style.css'
 import logoBatoi from '/logoBatoi.png'
 import data from './src/services/datos.js'
-import { booksFromUser, booksFromModule, booksWithStatus, incrementPriceOfbooks } from './src/functions.js'
-
-const books = data.books
-
+import Modules from './src/model/modules.class.js'
+import Books from './src/model/books.class.js'
+import Users from './src/model/users.class.js'
 
 document.querySelector('#app').innerHTML = `
   <div>
-    <img src="${logoBatoi}" class="logo" alt="Vite logo" />
+    <a href="https://vitesjs.dev" target="_blank">
+      <img src="${logoBatoi}" class="logo" alt="Vite logo" />
+    </a>
     <h1>BatoiBooks</h1>
     <p>Abre la consola para ver el resultado</p>
   </div>`
 
-  console.log(booksFromUser(books, 4));
-  console.log(booksWithStatus(booksFromModule(books, "5021"), "good"));
-  console.log(incrementPriceOfbooks(books, 0.1));
-  
+
+const modules = new Modules()
+modules.populate(data.modules)
+const users = new Users()
+users.populate(data.users)
+const books = new Books()
+books.populate(data.books)
+
+console.log(books.booksFromModule("5021"));
+console.log(books.booksWithStatus("new"));
+console.log(books.incrementPriceOfbooks(0.1));
+
