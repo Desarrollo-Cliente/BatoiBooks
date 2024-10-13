@@ -1,19 +1,20 @@
 import Book from './book.class.js';
 export default class Books {
+    #lastId = 0;
+
     constructor() {
         this.data = [];
-        this.lastId = 0;
     }
 
     populate(data) {
         this.data = data.map(book => new Book(book));
-        this.lastId = this.data.map(book => book.id).reduce((a, b) => Math.max(a, b), 0) + 1;
+        this.#lastId = this.data.map(book => book.id).reduce((a, b) => Math.max(a, b), 0) + 1;
     }
 
     addBook(book) {
-        const newBook = new Book({...book, id: this.lastId});
+        const newBook = new Book({...book, id: this.#lastId});
         if (this.data.push(newBook)) {
-            this.lastId++;
+            this.#lastId++;
             return newBook;
         }
     }

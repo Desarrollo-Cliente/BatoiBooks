@@ -1,20 +1,21 @@
 import User from './user.class.js';
 export default class Users {
+    #lastId = 0;
+
     constructor() {
         this.data = [];
-        this.lastId = 0;
     }
 
     populate(data) {
         this.data = data.map(user => new User(user.id, user.nick, user.email, user.password));
-        this.lastId = this.data.map(user => user.id).reduce((a, b) => Math.max(a, b), 0) + 1;
+        this.#lastId = this.data.map(user => user.id).reduce((a, b) => Math.max(a, b), 0) + 1;
     }
 
     addUser(user) {
-        const newUser = new User(this.lastId, user.nick, user.email, user.password);
+        const newUser = new User(this.#lastId, user.nick, user.email, user.password);
 
         if (this.data.push(newUser)) {
-            this.lastId++;
+            this.#lastId++;
             return newUser;
         }
     }
