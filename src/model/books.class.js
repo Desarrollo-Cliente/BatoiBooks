@@ -20,11 +20,6 @@ export default class Books {
     }
 
     removeBook(bookId) {
-        this.data = this.data.filter(book => book.id !== bookId);
-        
-    }
-
-    removeBook(bookId) {
         const book = this.data.find(book => book.id === bookId);
         
         if (!book) {
