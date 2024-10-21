@@ -1,7 +1,6 @@
-import url from './api';
+const url = import.meta.env.VITE_API_URL;
 
-
-function getDBModules() {
-  return fetch(`${url}modules`)
+export async function getDBModules() {
+  return await fetch(`${url}modules`)
     .then(response => response.json());
 }

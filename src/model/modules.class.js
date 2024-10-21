@@ -1,11 +1,20 @@
 import Module from './module.class.js';
+import { getDBModules } from '../services/modules.api.js';
+
+
 export default class Modules {
     constructor() {
         this.data = [];
     }
 
-    populate(data) {
-        this.data = data.map(modulo => new Module(modulo.code, modulo.cliteral, modulo.vliteral, modulo.courseId));
+    async populate() {
+        try {
+            const data = await getDBModules(); 
+            this.data = data.map(modulo => new Module(modulo.code, modulo.cliteral, modulo.vliteral, modulo.courseId));
+        }catch (error) {
+            console.error(error);
+        }
+
     }
 
     toString(){

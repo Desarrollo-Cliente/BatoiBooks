@@ -1,49 +1,71 @@
 import Book from './book.class.js';
+import api from '../services/books.api.js';
+
+
 export default class Books {
-    #lastId = 0;
 
     constructor() {
         this.data = [];
     }
 
-    populate(data) {
+    async populate() {
+        let data = await api.getDBBooks();
         this.data = data.map(book => new Book(book));
-        this.#lastId = this.data.map(book => book.id).reduce((a, b) => Math.max(a, b), 0) + 1;
     }
 
-    addBook(book) {
-        const newBook = new Book({...book, id: this.#lastId});
-        if (this.data.push(newBook)) {
-            this.#lastId++;
-            return newBook;
+    async addBook(book) {
+        try {
+            const bookDB = new Book(await api.addDBBook(book));
+            if (this.data.push(bookDB)) {
+                return bookDB;
+            }
+        }catch (error) {
+            console.error(error);
+            return;
         }
     }
 
-    removeBook(bookId) {
-        this.data = this.data.filter(book => book.id !== bookId);
-        
-    }
-
-    removeBook(bookId) {
-        const book = this.data.find(book => book.id === bookId);
-        
-        if (!book) {
-            throw new Error(`El libro con ID ${bookId} no se encontró.`);
-        }
-        
-        this.data = this.data.filter(book => book.id !== bookId);
-    }
-    
-    changeBook(book){
-        const changeBook = new Book(book);
-        const index = this.data.findIndex(b => b.id === changeBook.id);
+    async removeBook(bookId) {
+        // Hace falta un reques hanled
+        // const a = await api.getDBBookById(bookId);
+        // if ( a === null) {
+        //     throw new Error(`El libro con ID ${bookId} no se encontró.`);
+        // }
+        const index = this.data.findIndex(b => b.id === bookId);
         
         if (index === -1) {
             throw new Error(`El libro con ID ${changeBook.id} no se encontró.`);
         }
+
+        try {
+            await api.removeDBBook(bookId);
+            this.data = this.data.filter(book => book.id !== bookId);
+        } catch (error) {
+            throw new Error(`El libro con ID ${bookId} no se pudo eliminar.`);            
+        }
+    }
+    
+    async changeBook(book){
+        // Hace falta un reques hanled
+        // const a = await api.getDBBookById(book.id);
+        // if ( a === null) {
+        //     throw new Error(`El libro con ID ${book.id} no se encontró.`);
+        // }
+
+        const changeBook = new Book(book);
+        const index = this.data.findIndex(b => b.id === book.id);
         
-        this.data[index] = changeBook;
-        return changeBook;
+        if (index === -1) {
+            throw new Error(`El libro con ID ${changeBook.id} no se encontró.`);
+        }
+
+        try {
+            await api.changeDBBook(book);
+            this.data[index] = changeBook;
+            return changeBook;
+        } catch (error) {
+            throw new Error(`El libro con ID ${book.id} no se pudo comabiar.`);
+        }
     }
 
     getBookById(bookId) {

@@ -1,9 +1,8 @@
 import './style.css'
 import logoBatoi from '/logoBatoi.png'
-import data from './src/services/datos.js'
 import Modules from './src/model/modules.class.js'
 import Books from './src/model/books.class.js'
-import Users from './src/model/users.class.js'
+// import Users from './src/model/users.class.js'
 
 document.querySelector('#app').innerHTML = `
   <div>
@@ -16,13 +15,22 @@ document.querySelector('#app').innerHTML = `
 
 
 const modules = new Modules()
-modules.populate(data.modules)
-const users = new Users()
-users.populate(data.users)
+console.log('hola');
+// await modules.populate()
+// console.log(modules.data);
+
+// modules.populate()
+
+
+// const users = new Users()
+// users.populate(data.users)
 const books = new Books()
-books.populate(data.books)
+await books.populate()
+console.log(books.data);
 
-console.log(books.booksFromModule("5021"));
-console.log(books.booksWithStatus("new"));
-console.log(books.incrementPriceOfbooks(0.1));
 
+// console.log(books.booksFromModule("5021"));
+// console.log(books.booksWithStatus("new"));
+// console.log(books.incrementPriceOfbooks(0.1));
+
+// console.log(JSON.stringify(books.data));

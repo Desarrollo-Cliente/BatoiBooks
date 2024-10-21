@@ -1,18 +1,22 @@
-import url from './api';
+const url = import.meta.env.VITE_API_URL;
 
 
-function getDBUsers() {
-  return fetch(`${url}users`)
+async function getDBUsers() {
+  return await fetch(`${url}users`)
     .then(response => response.json());
 }
 
-function getDBUserById(userId) {
-    return fetch(`${url}users/${userId}`)
+async function getDBUserById(userId) {
+    return await fetch(`${url}users/${userId}`)
         .then(response => response.json());
 }
 
-function addDBUser(user) {
-    return fetch(`${url}users`, {
+async function addDBUser(user) {
+    // Esto no deberia de hacer falta, pero lo hago porque no me llega la id desde el test
+    user.id = await getId();
+
+    // Codigo normal
+    return await fetch(`${url}users`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -21,14 +25,14 @@ function addDBUser(user) {
     }).then(response => response.json());
 }
 
-function removeDBUser(userId) {
-    return fetch(`${url}users/${userId}`, {
+async function removeDBUser(userId) {
+    return await fetch(`${url}users/${userId}`, {
         method: 'DELETE'
     }).then(response => response.json());
 }
 
-function changeDBUser(user) {
-    return fetch(`${url}users/${user.id}`, {
+async function changeDBUser(user) {
+    return await fetch(`${url}users/${user.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -37,8 +41,8 @@ function changeDBUser(user) {
     }).then(response => response.json());
 }
 
-function changeDBUserPassword(userId, password) {
-    return fetch(`${url}users/${userId}`, {
+async function changeDBUserPassword(userId, password) {
+    return await fetch(`${url}users/${userId}`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
@@ -46,3 +50,20 @@ function changeDBUserPassword(userId, password) {
         body: JSON.stringify({ password })
     }).then(response => response.json());
 }
+
+async function getId() {
+    return await fetch(`${url}users`)
+        .then(response => response.json())
+        .then(data => {
+            return Math.max(...data.map(user => user.id)) + 1;
+        });
+}
+
+export default { 
+    getDBUsers, 
+    getDBUserById, 
+    addDBUser, 
+    removeDBUser, 
+    changeDBUser, 
+    changeDBUserPassword 
+};

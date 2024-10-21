@@ -1,3 +1,1 @@
-const url = 'http://localhost:4000/';
-
-export { url};
+export  default url = 'http://localhost:4000/';
