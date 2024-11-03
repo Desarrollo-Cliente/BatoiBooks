@@ -1,0 +1,104 @@
+<aside id="sidebar">
+  <nav id="nav-menu">
+    <ul>
+      <li><a href="#books-list" id="view-books">Ver Libros</a></li>
+      <li><a href="#section-form" id="add-book">Añadir Libro</a></li>
+      <li><a href="#about" id="about-section">Acerca de...</a></li>
+    </ul>
+  </nav>
+</aside>
+
+<main id="main-content">
+  <section id="user-messages" class="hidden">
+    <h1>Mensajes User</h1>
+    <p class="codigo">int x = 5;</p>
+    <p class="codigo">while(x > 0){x--;};</p>
+    <p class="codigo">print("Valor de x:", x);</p>
+  </section>
+
+  <section id="books-list">
+    <article id="book-1" class="card">
+      <img src="https://placehold.co/200x200" alt="Libro: id del libro">
+      <div class="book-details">
+        <h3 class="book-title">cliteral del módulo (id del libro)</h3>
+        <h4 class="book-publisher">Editorial</h4>
+        <p class="book-pages">25 páginas</p>
+        <p class="book-status">Estado: good</p>
+        <p class="book-sale-status">En venta // Vendido el 21/12/2023</p>
+        <p class="book-comments">Aquí van los comentarios del libro</p>
+        <h4 class="book-price">12 €</h4>
+      </div>
+    </article>
+  </section>
+
+  <section id="section-form">
+    <form id="book-form">
+      <div>
+        <label for="module-select">Módulo:</label>
+        <select id="module-select">
+          <option>- Selecciona un módulo -</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="publisher-input">Editorial:</label>
+        <input type="text" id="publisher-input" required>
+      </div>
+
+      <div>
+        <label for="price-input">Precio:</label>
+        <input type="number" id="price-input">
+      </div>
+
+      <div>
+        <label for="pages-input">Páginas:</label>
+        <input type="number" id="pages-input">
+      </div>
+
+      <div id="status-group">
+        <label>Estado:</label>
+        <label for="new-status">Nuevo
+          <input type="radio" id="new-status" name="status" value="new" required>
+        </label>
+        <label for="good-status">Bueno
+          <input type="radio" id="good-status" name="status" value="good">
+        </label>
+        <label for="damaged-status">Dañado
+          <input type="radio" id="damaged-status" name="status" value="damaged">
+        </label>
+      </div>
+
+      <div>
+        <label for="comments-textarea">Comentarios:</label>
+        <textarea id="comments-textarea"></textarea>
+      </div>
+
+      <button type="submit" id="submit-button">Añadir</button>
+      <button type="reset" id="reset-button">Reset</button>
+    </form>
+  </section>
+
+  <section id="about" class="hidden">
+    <h1>About</h1>
+    <article id="about-library">
+      <h2>Librería</h2>
+      <p>Esta es una aplicación para gestionar una librería.</p>
+    </article>
+    <article id="about-authors">
+      <h2>Autores</h2>
+      <p>Esta aplicación ha sido desarrollada por:</p>
+      <ul>
+        <li>Jordi Gisbert Ferriz</li>
+      </ul>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae fugiat suscipit adipisci, aliquid nam ipsam voluptas excepturi vitae magni, commodi illum eius, blanditiis maiores cupiditate vero sit nulla quaerat veritatis!</p>
+    </article>
+  </section>
+
+  <section id="remove-section">
+    <form id="remove-form">
+      <label for="remove-id-input">Id:</label>
+      <input type="number" id="remove-id-input">
+      <button id="remove-button">Borrar libro</button>
+    </form>
+  </section>
+</main>

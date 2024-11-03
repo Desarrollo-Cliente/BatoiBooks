@@ -1,36 +1,38 @@
-import './style.css'
-import logoBatoi from '/logoBatoi.png'
-import Modules from './src/model/modules.class.js'
-import Books from './src/model/books.class.js'
-import Users from './src/model/users.class.js'
+import './style.css';
+import './public/estilo.css';
+import Controller from "./src/controller/controller.class";
+
+import logoBatoi from '/logoBatoi.png';
+
+async function loadHtml() {
+  // Cargar el contenido HTML del archivo en /public/myContent.html
+  const response = await fetch('/index.html');
+  const html = await response.text();
+  return html;
+}
 
 document.querySelector('#app').innerHTML = `
-  <div>
+  <header>
     <a href="https://vitesjs.dev" target="_blank">
       <img src="${logoBatoi}" class="logo" alt="Vite logo" />
     </a>
     <h1>BatoiBooks</h1>
-    <p>Abre la consola para ver el resultado</p>
-  </div>`
+  </header>
+`;
 
+// Llama a la función loadHtml para añadir el contenido dinámico
+await loadHtml().then(async (htmlContent) => {
+  document.querySelector('#app').innerHTML+= htmlContent;
 
-const myBooks = new Books();
-const myUsers = new Users();
-const myModules = new Modules();
-
-Promise.all([
-  myBooks.populate(),
-  myUsers.populate(),
-  myModules.populate()
-]).then(() => {
-  // Mostrar todos los datos por consola después de que las promesas se hayan resuelto
-  console.log(myBooks.toString());
-  console.log(myUsers.toString());
-  console.log(myModules.toString());
-
-  
-  console.log('Libros del módulo 5021:\n', myBooks.booksFromModule('5021'));
-  console.log('Libros con estado "new":\n', myBooks.booksWithStatus('new'));
-}).catch(error => {
-  console.error("Error populando datos: ", error);
+  const controller = new Controller()
+  await controller.init()
+}).catch((error) => {
+  console.error('Error al cargar el contenido HTML:', error);
 });
+
+
+
+
+
+
+
