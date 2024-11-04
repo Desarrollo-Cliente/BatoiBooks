@@ -24,7 +24,7 @@ export default class Modules {
     getModuleByCode(modeuleCode) {
         const module = this.data.find(module => module.code === modeuleCode);
         if (!module) {
-            throw new Error('Book not found');
+            throw new Error('Error Book not found');
         }
         return module;
     }

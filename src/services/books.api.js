@@ -13,7 +13,7 @@ async function getDBBookById(bookId) {
         }
         return await response.json();
     } catch (error) {
-        throw new Error('An error occurred while retrieving the book from the database');
+        throw new Error('Error An error occurred while retrieving the book from the database');
     }
 }
 
@@ -36,12 +36,12 @@ async function addDBBook(book) {
         
         
         if (!response.ok) {
-            throw new Error('Failed to add book to the database');
+            throw new Error('Error Failed to add book to the database');
         }
         
         return await response.json();
     } catch (error) {
-        throw new Error('An error occurred while adding the book to the database');
+        throw new Error('Error An error occurred while adding the book to the database');
     }
 }
 
@@ -52,12 +52,12 @@ async function removeDBBook(bookId) {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to remove book from the database');
+            throw new Error('Error Failed to remove book from the database');
         }
 
         return await response.json();
     } catch (error) {
-        throw new Error('An error occurred while removing the book from the database');
+        throw new Error('Error An error occurred while removing the book from the database');
     }
 }
 

@@ -30,19 +30,19 @@ export default class Users {
         // Hace falta un reques hanled
         // const a = await api.getDBUserById(userId);
         // if ( a === null) {
-        //     throw new Error(`El usuario con ID ${userId} no se encontró.`);
+        //     throw new Error(`Error El usuario con ID ${userId} no se encontró.`);
         // }
         const user = this.data.find(user => user.id === userId);
         
         if (!user) {
-            throw new Error(`El usuario con ID ${userId} no se encontró.`);
+            throw new Error(`Error El usuario con ID ${userId} no se encontró.`);
         }
         
         try {
             await api.removeDBUser(userId);
             this.data = this.data.filter(user => user.id !== userId);
         } catch (error) {
-            throw new Error(`El usuario con ID ${userId} no se pudo eliminar.`);            
+            throw new Error(`Error El usuario con ID ${userId} no se pudo eliminar.`);            
         }
     }
     
@@ -50,13 +50,13 @@ export default class Users {
         // Hace falta un reques hanled
         // const a = await api.getDBUserById(userId);
         // if ( a === null) {
-        //     throw new Error(`El usuario con ID ${userId} no se encontró.`);
+        //     throw new Error(`Error El usuario con ID ${userId} no se encontró.`);
         // }
         const changUser = new User(user.id, user.nick, user.email, user.password);
         const index = this.data.findIndex(b => b.id === changUser.id);
         
         if (index === -1) {
-            throw new Error(`El usuario con ID ${changUser.id} no se encontró.`);
+            throw new Error(`Error El usuario con ID ${changUser.id} no se encontró.`);
         }
         
         try {
@@ -64,24 +64,24 @@ export default class Users {
             this.data[index] = changUser;
             return changUser;
         } catch (error) {
-            throw new Error(`El usuario con ID ${userId} no se pudo eliminar.`);            
+            throw new Error(`Error El usuario con ID ${userId} no se pudo eliminar.`);            
         }
     }
 
     getUserById(userId) {
-        return this.data.find(user => user.id === userId) || (() => { throw new Error('User no encontrado'); })();
+        return this.data.find(user => user.id === userId) || (() => { throw new Error('Error User no encontrado'); })();
     }
 
     getUserIndexById(userId) {
         const index = this.data.findIndex(user => user.id === userId);
         if (index === -1) {
-            throw new Error('User no encontrado');
+            throw new Error('Error User no encontrado');
         }
         return index;
     }
 
     getUserByNickName(nick) {
-        return this.data.find(user => user.nick === nick) || (() => { throw new Error('User no encontrado'); })();
+        return this.data.find(user => user.nick === nick) || (() => { throw new Error('Error User no encontrado'); })();
     }
 
     async changeUserPassword(userId, password) {
@@ -91,7 +91,7 @@ export default class Users {
         const user = this.data.find(user => user.id === userId);
         
         if (!user) {
-            throw new Error(`El usuario con ID ${userId} no se encontró.`);
+            throw new Error(`Error El usuario con ID ${userId} no se encontró.`);
         }
 
         try {
@@ -99,7 +99,7 @@ export default class Users {
             user.password = password;
             return user;
         } catch (error) {
-            throw new Error(`El usuario con ID ${userId} no se pudo cambiar.`);
+            throw new Error(`Error El usuario con ID ${userId} no se pudo cambiar.`);
         }
     }
     

@@ -8,97 +8,70 @@
   </nav>
 </aside>
 
+<div id="messages"></div>
 <main id="main-content">
-  <section id="user-messages" class="hidden">
-    <h1>Mensajes User</h1>
-    <p class="codigo">int x = 5;</p>
-    <p class="codigo">while(x > 0){x--;};</p>
-    <p class="codigo">print("Valor de x:", x);</p>
-  </section>
 
-  <section id="books-list">
-    <article id="book-1" class="card">
-      <img src="https://placehold.co/200x200" alt="Libro: id del libro">
-      <div class="book-details">
-        <h3 class="book-title">cliteral del módulo (id del libro)</h3>
-        <h4 class="book-publisher">Editorial</h4>
-        <p class="book-pages">25 páginas</p>
-        <p class="book-status">Estado: good</p>
-        <p class="book-sale-status">En venta // Vendido el 21/12/2023</p>
-        <p class="book-comments">Aquí van los comentarios del libro</p>
-        <h4 class="book-price">12 €</h4>
-      </div>
+  <section id="list"></section>
+  <section id="form">
+    <article class="remove-container">
+      <h2>Eliminar libro</h2>
+      <label for="id-remove">Id:</label>
+      <input type="number" id="id-remove" required>
+      <button id="remove">Borrar libro</button>
     </article>
-  </section>
+    <article>
+      <form id="bookForm">
+        <h2>Añadir libro</h2>
+        <div>
+          <label for="id-module">Módulo:</label>
+          <select id="id-module" name="moduleCode" required>
 
-  <section id="section-form">
-    <form id="book-form">
-      <div>
-        <label for="module-select">Módulo:</label>
-        <select id="module-select">
-          <option>- Selecciona un módulo -</option>
-        </select>
-      </div>
+          </select>
+        </div>
 
-      <div>
-        <label for="publisher-input">Editorial:</label>
-        <input type="text" id="publisher-input" required>
-      </div>
+        <div>
+          <label for="publisher">Editorial:</label>
+          <input type="text" id="publisher" name="publisher" required>
+        </div>
 
-      <div>
-        <label for="price-input">Precio:</label>
-        <input type="number" id="price-input">
-      </div>
+        <div>
+          <label for="status">Estado:</label>
+          <div id="status">
+            <label for="new">Nuevo
+              <input type="radio" id="new" name="status" value="new" required>
+            </label>
+            <label for="good">Bueno
+              <input type="radio" id="good" name="status" value="good">
+            </label>
+            <label for="damaged">Dañado
+              <input type="radio" id="damaged" name="status" value="damaged">
+            </label>
+          </div>
+        </div>
 
-      <div>
-        <label for="pages-input">Páginas:</label>
-        <input type="number" id="pages-input">
-      </div>
+        <div>
+          <label for="price">Precio:</label>
+          <input type="number" id="price" name="price" required min="0">
+        </div>
 
-      <div id="status-group">
-        <label>Estado:</label>
-        <label for="new-status">Nuevo
-          <input type="radio" id="new-status" name="status" value="new" required>
-        </label>
-        <label for="good-status">Bueno
-          <input type="radio" id="good-status" name="status" value="good">
-        </label>
-        <label for="damaged-status">Dañado
-          <input type="radio" id="damaged-status" name="status" value="damaged">
-        </label>
-      </div>
+        <div>
+          <label for="pages">Páginas:</label>
+          <input type="number" id="pages" name="pages" required min="1">
+        </div>
 
-      <div>
-        <label for="comments-textarea">Comentarios:</label>
-        <textarea id="comments-textarea"></textarea>
-      </div>
 
-      <button type="submit" id="submit-button">Añadir</button>
-      <button type="reset" id="reset-button">Reset</button>
-    </form>
-  </section>
+        <div>
+          <label for="comments">Comentarios:</label>
+          <textarea id="comments" name="comments"></textarea>
+        </div>
 
-  <section id="about" class="hidden">
-    <h1>About</h1>
-    <article id="about-library">
-      <h2>Librería</h2>
-      <p>Esta es una aplicación para gestionar una librería.</p>
+        <input type="submit" value="Añadir">
+        <button type="reset">Reset</button>
+      </form>
     </article>
-    <article id="about-authors">
-      <h2>Autores</h2>
-      <p>Esta aplicación ha sido desarrollada por:</p>
-      <ul>
-        <li>Jordi Gisbert Ferriz</li>
-      </ul>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae fugiat suscipit adipisci, aliquid nam ipsam voluptas excepturi vitae magni, commodi illum eius, blanditiis maiores cupiditate vero sit nulla quaerat veritatis!</p>
-    </article>
-  </section>
 
-  <section id="remove-section">
-    <form id="remove-form">
-      <label for="remove-id-input">Id:</label>
-      <input type="number" id="remove-id-input">
-      <button id="remove-button">Borrar libro</button>
-    </form>
   </section>
+  <section id="about">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repudiandae iure placeat inventore
+    temporibus molestiae, enim modi, debitis voluptates numquam sint ab nobis repellat, pariatur quis labore eum totam
+    magnam ipsam?</section>
 </main>

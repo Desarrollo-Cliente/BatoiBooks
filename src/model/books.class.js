@@ -29,19 +29,19 @@ export default class Books {
         // Hace falta un reques hanled
         // const a = await api.getDBBookById(bookId);
         // if ( a === null) {
-        //     throw new Error(`El libro con ID ${bookId} no se encontró.`);
+        //     throw new Error(`Error El libro con ID ${bookId} no se encontró.`);
         // }
         const index = this.data.findIndex(b => b.id === bookId);
         
         if (index === -1) {
-            throw new Error(`El libro con ID ${changeBook.id} no se encontró.`);
+            throw new Error(`Error  El libro con ID ${changeBook.id} no se encontró.`);
         }
 
         try {
             await api.removeDBBook(bookId);
             this.data = this.data.filter(book => book.id !== bookId);
         } catch (error) {
-            throw new Error(`El libro con ID ${bookId} no se pudo eliminar.`);            
+            throw new Error(`Error   El libro con ID ${bookId} no se pudo eliminar.`);            
         }
     }
     
@@ -49,14 +49,14 @@ export default class Books {
         // Hace falta un reques hanled
         // const a = await api.getDBBookById(book.id);
         // if ( a === null) {
-        //     throw new Error(`El libro con ID ${book.id} no se encontró.`);
+        //     throw new Error(`Error El libro con ID ${book.id} no se encontró.`);
         // }
 
         const changeBook = new Book(book);
         const index = this.data.findIndex(b => b.id === book.id);
         
         if (index === -1) {
-            throw new Error(`El libro con ID ${changeBook.id} no se encontró.`);
+            throw new Error(`Error  El libro con ID ${changeBook.id} no se encontró.`);
         }
 
         try {
@@ -64,14 +64,14 @@ export default class Books {
             this.data[index] = changeBook;
             return changeBook;
         } catch (error) {
-            throw new Error(`El libro con ID ${book.id} no se pudo comabiar.`);
+            throw new Error(`Error  El libro con ID ${book.id} no se pudo comabiar.`);
         }
     }
 
     getBookById(bookId) {
         const book = this.data.find(book => book.id === bookId);
         if (!book) {
-            throw new Error('Book not found');
+            throw new Error('Error Error Book not found');
         }
         return book;
     }
@@ -79,7 +79,7 @@ export default class Books {
     getBookIndexById(bookId) {
         const book = this.data.findIndex(book => book.id === bookId);
         if (book === -1) {
-            throw new Error('Book not found');
+            throw new Error('Error Error Book not found');
         }
         return book;
     }
