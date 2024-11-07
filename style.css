@@ -23,35 +23,50 @@ body {
 }
 
 #app {
-  display: grid;
-  grid-template-areas: 
-    "header header"
-    "sidebar main"
-    "footer footer";
-  grid-template-columns: 1fr 3fr;
-  grid-template-rows: auto 1fr auto;
+  display: flex;
+  flex-direction: column;
   gap: 1em;
   width: 100%;
   max-width: 1200px;
-  padding: 1em;
   text-align: center;
 }
 
 header {
+  position: fixed;
+  width: 100%;
+  height: 120px;
+  left: 0;
+  top: 0;
   grid-area: header;
   background-color: #333;
   padding: 1em;
   border-radius: 8px;
+  display: flex;
+  justify-content: space-around;
 }
 
 aside#sidebar {
-  grid-area: sidebar;
+  position: fixed;
+  top: 120px;
+  height: 40px;
+  left: 0;
+  width: 100%; /* Ajusta el ancho según sea necesario */
+  overflow-y: auto;
   background-color: #333;
   padding: 1em;
   border-radius: 8px;
+
+  ul {
+    margin: 0;
+    li{
+      display: inline-block;
+      margin: 10px;
+    }
+  }
 }
 
 main#main-content {
+  margin-top: 160px;
   grid-area: main;
   padding: 1em;
   background-color: #1e1e1e;
@@ -87,26 +102,40 @@ h2, h3, h4 {
 #nav-menu ul {
   list-style: none;
   padding: 0;
+  li {
+    margin: 0.5em 0;
+  }
+  a {
+    color: #646cff;
+    text-decoration: none;
+    font-size: 1.1rem;
+  }
+  a:hover {
+    color: #535bf2;
+  }
 }
 
-#nav-menu li {
-  margin: 0.5em 0;
-}
 
-#nav-menu a {
-  color: #646cff;
-  text-decoration: none;
-  font-size: 1.1rem;
-}
-
-#nav-menu a:hover {
-  color: #535bf2;
-}
 
 .section-title {
   font-size: 2rem;
   color: #646cff;
   margin-bottom: 1em;
+}
+
+#list { /* Contenedor para las tarjetas */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1em;
+  h1{
+    grid-column: 1/4;
+  }
+}
+
+@media (max-width: 768px) {
+  #list {
+    grid-template-columns: 1fr;
+  }
 }
 
 .card {
@@ -226,17 +255,5 @@ button:focus-visible {
   }
   form {
     background-color: #f1f1f1;
-  }
-}
-
-@media (max-width: 768px) {
-  #app {
-    grid-template-areas: 
-      "header"
-      "main"
-      "sidebar"
-      "footer";
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
   }
 }
