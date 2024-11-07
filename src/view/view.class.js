@@ -33,7 +33,7 @@ export default class View {
         bookContainer.id = book.id;
 
         const bookImage = document.createElement('img');
-        bookImage.src = 'https://via.placeholder.com/200x200';
+        bookImage.src = 'https://dummyimage.com/100x100/fff/000';
         bookImage.alt = `Libro con id,: ${book.id}`;
 
         const bookDetails = document.createElement('div');
