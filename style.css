@@ -75,7 +75,7 @@ main#main-content {
 }
 
 main#main-content > :first-child > :first-child {
-  padding-top: 180px;
+  margin-top: 180px;
 }
 
 a {
