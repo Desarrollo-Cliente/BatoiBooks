@@ -109,12 +109,6 @@ h1 {
   }
 }
 
-@media (max-width: 768px) {
-  #list {
-    grid-template-columns: 1fr;
-  }
-}
-
 .card {
   background-color: #333;
   padding: 1.5em;
@@ -302,3 +296,27 @@ button:focus-visible {
     background-color: #ddd;
   }
 }
+
+
+/* Para dispositivos móviles (pantallas más pequeñas de 600px) */
+@media only screen and (max-width: 600px) {
+  #list {
+    grid-template-columns: 1fr;
+    h1{
+      grid-column: 1;
+    }
+  }
+}
+
+
+/* Para tabletas (pantallas entre 600px y 1024px) */
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+  #list {
+    grid-template-columns: repeat(2, 1fr);
+    h1{
+      grid-column: 1/3;
+    }
+  }
+}
+
+
