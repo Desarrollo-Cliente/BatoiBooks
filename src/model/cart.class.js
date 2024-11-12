@@ -1,8 +1,7 @@
 import Book from './book.class.js';
-import api from '../services/books.api.js';
 
 
-export default class Books {
+export default class Cart {
 
     constructor() {
         this.data = [];
@@ -24,23 +23,6 @@ export default class Books {
         console.log('Se ha añadido el libro' + bookCopia);
         
     }
-
-    async removeBook(bookId) {
-        const index = this.getBookIndexById(bookId);
-        
-        if (index === -1) {
-            throw new Error(`Error  El libro con ID ${changeBook.id} no se encontró en el carro.`);
-        }
-
-        try {
-            await api.removeDBBook(bookId);
-            this.data = this.data.filter(book => book.id !== bookId);
-        } catch (error) {
-            throw new Error(`Error   El libro con ID ${bookId} no se pudo eliminar del carro.`);            
-        }
-    }
-
-    
 
     getBookIndexById(bookId) {
         return this.data.findIndex(book => book.id === bookId);

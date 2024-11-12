@@ -2,12 +2,14 @@ import Modules from "../model/modules.class";
 import Users from "../model/users.class";
 import Books from "../model/books.class";
 import Book from "../model/book.class";
+import Cart from "../model/cart.class";
 import View from "../view/view.class";
 export default class Controller {
 
     constructor() {
         this.view = new View();
         this.books = new Books();
+        this.cart = new Cart();
         this.users = new Users();
         this.modules = new Modules();
 
@@ -19,7 +21,8 @@ export default class Controller {
             await Promise.all([
                 this.books.populate(),
                 this.users.populate(),
-                this.modules.populate()
+                this.modules.populate(),
+                this.cart.populate()
             ]);
             this.view.renderBooks(this.books.data, this.handleRemoveBook.bind(this));
             this.view.renderModules(this.modules.data);
