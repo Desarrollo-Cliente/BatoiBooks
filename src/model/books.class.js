@@ -51,10 +51,11 @@ export default class Books {
         // if ( a === null) {
         //     throw new Error(`Error El libro con ID ${book.id} no se encontró.`);
         // }
-
+        console.log('libro: ', book, 'libros', this.data);
+        
         const changeBook = new Book(book);
         const index = this.data.findIndex(b => b.id === book.id);
-        
+        console.log('index', index);
         if (index === -1) {
             throw new Error(`Error  El libro con ID ${changeBook.id} no se encontró.`);
         }

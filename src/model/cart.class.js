@@ -31,6 +31,13 @@ export default class Cart {
     toString(){
         return JSON.stringify(this.data);
     }
+
+    remove(bookId){
+        const index = this.getBookIndexById(bookId);
+        if(index > -1){
+            this.data.splice(index, 1);
+        }
+    }
     
 
 

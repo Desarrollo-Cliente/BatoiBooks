@@ -12,6 +12,11 @@ export default class Controller {
         this.cart = new Cart();
         this.users = new Users();
         this.modules = new Modules();
+        this.eventosBook = {
+            'remove': this.handleRemoveBook.bind(this),
+            'addCart': this.cart.addItem.bind(this.cart),
+            'edit': this.view.editBook.bind(this.view),
+        }
 
 
     }
@@ -24,7 +29,7 @@ export default class Controller {
                 this.modules.populate(),
                 this.cart.populate()
             ]);
-            this.view.renderBooks(this.books.data, this.handleRemoveBook.bind(this));
+            this.view.renderBooks(this.books.data, this.eventosBook);
             this.view.renderModules(this.modules.data);
             this.view.setBookSubmitHandler(this.handleSubmitBook.bind(this));
             this.view.setBookRemoveHandler(this.handleRemoveBook.bind(this));
@@ -35,12 +40,26 @@ export default class Controller {
     }
 
     async handleSubmitBook(data) {
+        const book = new Book(data);
+        
+        if (book.id !== '') {
+            try {
+                await this.books.changeBook(book);
+                this.view.mensaje('success', 'El libro fue editado correctamente');
+                this.view.removeBook(book.id);
+                this.view.renderBook(book, this.eventosBook);
+            } catch (error) {
+                console.log(error);
+                
+                this.view.mensaje('error', 'Error al editar el libro');
+            }
+            return;
+        }
         try {
-            const book = new Book(data);
             await this.books.addBook(book);
             this.view.mensaje('success', 'El libro fue añadido');
             
-            this.view.renderBook(book, this.handleRemoveBook.bind(this));
+            this.view.renderBook(book, this.eventosBook);
         } catch (error) {
             this.view.mensaje('error', 'Error al añadir el libro');
         }
@@ -54,6 +73,7 @@ export default class Controller {
         try {
             await this.books.removeBook(id);
             this.view.removeBook(id);
+            this.cart.remove(id);
             this.view.mensaje('success', 'El libro fue eliminado correctamente');
         } catch (error) {
             this.view.mensaje('error', error.message);

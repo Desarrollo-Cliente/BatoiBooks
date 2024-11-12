@@ -27,7 +27,7 @@ export default class View {
         });
     }
 
-    renderBook(book, handleRemoveBook) {
+    renderBook(book, eventosBook) {
         const bookContainer = document.createElement('div');
         bookContainer.classList.add('card');
         bookContainer.id = book.id;
@@ -46,7 +46,7 @@ export default class View {
             <p>Comentarios: ${book.comments}</p>
             <p>Fecha de venta: ${book.soldDate}</p>
             <div class="icons">
-                <button class="carrito">
+                <button class="addCart">
                     <i class="bi bi-bag-plus"></i>
                 </button>
                 <button class="edit">
@@ -60,20 +60,26 @@ export default class View {
 
         bookContainer.append(bookImage, bookDetails);
         this.booksList.append(bookContainer);
-        document.getElementById(book.id).querySelector('.delete').addEventListener('click', () => { 
-            handleRemoveBook(book.id) 
+        document.getElementById(book.id).querySelector('.addCart').addEventListener('click', () => {
+            eventosBook.addCart(book);
+        });
+        document.getElementById(book.id).querySelector('.delete').addEventListener('click', () => {
+            eventosBook.remove(book.id);
+        });
+        document.getElementById(book.id).querySelector('.edit').addEventListener('click', () => {
+            eventosBook.edit(book);
         });
 
     }
 
-    
 
-    renderBooks(books, handleRemoveBook) {
+
+    renderBooks(books, eventosBook) {
         this.booksList.innerHTML = '';
         const title = document.createElement('h1');
         title.textContent = 'Listado de libros';
         this.booksList.appendChild(title);
-        books.map(book => {this.renderBook(book, handleRemoveBook);});
+        books.map(book => { this.renderBook(book, eventosBook); });
     }
 
     removeBook(id) {
@@ -93,6 +99,8 @@ export default class View {
 
     setBookSubmitHandler(callback) {
         this.bookForm.addEventListener('submit', (event) => {
+            console.log('submit');
+            
             event.preventDefault()
             const formData = new FormData(this.bookForm);
             const payload = {};
@@ -108,6 +116,31 @@ export default class View {
             const idToRemove = document.getElementById('id-remove').value
             callback(idToRemove)
         })
+    }
+
+    editBook(book) {
+        this.bookForm.reset();
+        this.bookForm.querySelector('h2').textContent = 'Editar libro';
+        const idLabel = document.createElement('h3');
+        idLabel.textContent = `Id: ${book.id}`;
+        this.bookForm.querySelector('h2').after(idLabel);
+
+        console.log(book);
+        const idInput = document.createElement('input');
+        idInput.type = 'hidden';
+        idInput.name = 'id';
+        idInput.value = book.id;
+        this.bookForm.appendChild(idInput);
+
+        this.bookForm.querySelector('#id-module').value = book.moduleCode;
+        this.bookForm.querySelector('#publisher').value = book.publisher;
+        this.bookForm.querySelector('#price').value = book.price;
+        this.bookForm.querySelector(`#status label[for="${book.status}"] input`).checked = true;
+        this.bookForm.querySelector('#pages').value = book.pages;
+        this.bookForm.querySelector('#comments').value = book.comments;
+
+        this.bookForm.querySelector('input[type="submit"]').value = 'Editar';
+        this.bookForm.querySelector('button[type="reset"]').textContent = 'Cancelar';
     }
 
 
