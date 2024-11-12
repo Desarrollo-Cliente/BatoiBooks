@@ -21,7 +21,7 @@ export default class Controller {
                 this.users.populate(),
                 this.modules.populate()
             ]);
-            this.view.renderBooks(this.books.data);
+            this.view.renderBooks(this.books.data, this.handleRemoveBook.bind(this));
             this.view.renderModules(this.modules.data);
             this.view.setBookSubmitHandler(this.handleSubmitBook.bind(this));
             this.view.setBookRemoveHandler(this.handleRemoveBook.bind(this));
@@ -36,7 +36,8 @@ export default class Controller {
             const book = new Book(data);
             await this.books.addBook(book);
             this.view.mensaje('success', 'El libro fue añadido');
-            this.view.renderBook(book);
+            
+            this.view.renderBook(book, this.handleRemoveBook.bind(this));
         } catch (error) {
             this.view.mensaje('error', 'Error al añadir el libro');
         }

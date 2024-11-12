@@ -26,13 +26,10 @@ await loadHtml().then(async (htmlContent) => {
 
   const controller = new Controller()
   await controller.init()
+  
 }).catch((error) => {
   console.error('Error al cargar el contenido HTML:', error);
 });
-
-
-
-
 
 
 

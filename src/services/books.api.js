@@ -20,7 +20,7 @@ async function getDBBookById(bookId) {
 async function addDBBook(book) {
     try {
         // Esto no deberia de hacer falta, pero lo hago porque no me llega la id desde el test
-        book.id = await getId();
+        book.id = (await getId()).toString();
 
 
         // Codigo normal
@@ -46,6 +46,7 @@ async function addDBBook(book) {
 }
 
 async function removeDBBook(bookId) {
+    
     try {
         const response = await fetch(`${url}books/${bookId}`, {
             method: 'DELETE'

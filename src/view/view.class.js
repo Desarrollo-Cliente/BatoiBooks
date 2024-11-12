@@ -27,7 +27,7 @@ export default class View {
         });
     }
 
-    renderBook(book) {
+    renderBook(book, handleRemoveBook) {
         const bookContainer = document.createElement('div');
         bookContainer.classList.add('card');
         bookContainer.id = book.id;
@@ -45,18 +45,35 @@ export default class View {
             <p>Estado: ${book.status}</p>
             <p>Comentarios: ${book.comments}</p>
             <p>Fecha de venta: ${book.soldDate}</p>
-        `;
+            <div class="icons">
+                <button class="carrito">
+                    <i class="bi bi-bag-plus"></i>
+                </button>
+                <button class="edit">
+                    <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="delete">
+                    <i class="bi bi-trash-fill"></i>
+                </button>
+            </div>
+            `;
 
         bookContainer.append(bookImage, bookDetails);
         this.booksList.append(bookContainer);
+        document.getElementById(book.id).querySelector('.delete').addEventListener('click', () => { 
+            handleRemoveBook(book.id) 
+        });
+
     }
 
-    renderBooks(books) {
+    
+
+    renderBooks(books, handleRemoveBook) {
         this.booksList.innerHTML = '';
         const title = document.createElement('h1');
         title.textContent = 'Listado de libros';
         this.booksList.appendChild(title);
-        books.map(book => {this.renderBook(book);});
+        books.map(book => {this.renderBook(book, handleRemoveBook);});
     }
 
     removeBook(id) {
