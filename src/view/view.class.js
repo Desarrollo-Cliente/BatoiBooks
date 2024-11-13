@@ -125,7 +125,6 @@ export default class View {
         idLabel.textContent = `Id: ${book.id}`;
         this.bookForm.querySelector('h2').after(idLabel);
 
-        console.log(book);
         const idInput = document.createElement('input');
         idInput.type = 'hidden';
         idInput.name = 'id';
@@ -140,7 +139,19 @@ export default class View {
         this.bookForm.querySelector('#comments').value = book.comments;
 
         this.bookForm.querySelector('input[type="submit"]').value = 'Editar';
-        this.bookForm.querySelector('button[type="reset"]').textContent = 'Cancelar';
+        const btnCancelar = this.bookForm.querySelector('button[type="reset"]');
+        btnCancelar.textContent = 'Cancelar';
+        btnCancelar.addEventListener('click', this.resetEditBook);
+        document.querySelector('#add-book').addEventListener('click', this.resetEditBook);
+        
+    }
+
+    resetEditBook = () => {
+        this.bookForm.reset();
+        this.bookForm.querySelector('h2').textContent = 'Añadir libro';
+        this.bookForm.querySelector('input[type="hidden"]').remove();
+        this.bookForm.querySelector('input[type="submit"]').value = 'Añadir';
+        this.bookForm.querySelector('button[type="reset"]').textContent = 'Limpiar';
     }
 
 
