@@ -6,7 +6,11 @@ export default class View {
         this.form = document.getElementById('form');
         this.remove = document.getElementById('remove');
         this.bookForm = document.getElementById('bookForm');
+        // this.bookForm = this.bookForm.getElementById('bookForm');
         this.messages = document.getElementById('messages');
+        window.addEventListener("hashchange", this.cambioHash);
+
+          
     }
 
     renderModules(modules) {
@@ -119,6 +123,7 @@ export default class View {
     }
 
     editBook(book) {
+        window.location.hash = '#edit';
         this.bookForm.reset();
         this.bookForm.querySelector('h2').textContent = 'Editar libro';
         const idLabel = document.createElement('h3');
@@ -154,6 +159,39 @@ export default class View {
         this.bookForm.querySelector('#id-book').remove();
         this.bookForm.querySelector('input[type="submit"]').value = 'Añadir';
         this.bookForm.querySelector('button[type="reset"]').textContent = 'Limpiar';
+    }
+
+    cambioHash = () => {
+        switch (window.location.hash) {
+            case '#about':
+            this.about.classList.remove('hidden');
+            this.form.classList.add('hidden');
+            this.booksList.classList.add('hidden');
+            break;
+            case '#bookForm':
+            this.about.classList.add('hidden');
+            this.form.classList.remove('hidden');
+            this.booksList.classList.add('hidden');
+            break;
+            case '#list':
+            this.about.classList.add('hidden');
+            this.form.classList.add('hidden');
+            this.booksList.classList.remove('hidden');
+            break;
+            case '#edit':
+            this.about.classList.add('hidden');
+            this.form.classList.remove('hidden');
+            this.booksList.classList.add('hidden');
+            break;
+            default:
+            this.about.classList.add('hidden');
+            this.form.classList.add('hidden');
+            this.booksList.classList.add('hidden');
+            break;
+        }
+
+
+        console.log("El hash de la URL ha cambiado:", window.location.hash);
     }
 
 

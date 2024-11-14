@@ -72,10 +72,7 @@ main#main-content {
   padding: 1em;
   background-color: #1e1e1e;
   border-radius: 8px;
-}
-
-main#main-content > :first-child > :first-child {
-  margin-top: 180px;
+  padding-top: 160px;
 }
 
 a {
@@ -266,6 +263,10 @@ button:focus-visible {
   flex-direction: column;
   gap: 1em;
   align-items: center;
+}
+
+.hidden{
+  display: none !important;
 }
 
 @media (prefers-color-scheme: light) {
