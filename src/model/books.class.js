@@ -15,6 +15,8 @@ export default class Books {
 
     async addBook(book) {
         try {
+            // No se de donde sacar el userId, porque no tenemos un logIn por el momento
+            book.userId = 2;
             const bookDB = new Book(await api.addDBBook(book));
             if (this.data.push(bookDB)) {
                 return bookDB;
@@ -85,8 +87,10 @@ export default class Books {
         return book;
     }
     
-    bookExists(userId, moduleCode) {
-        return this.data.some(book => book.userId === userId && book.moduleCode === moduleCode);
+    async bookExists(moduleCode, userId) {
+        debugger
+        let data = await api.bookExists(userId, moduleCode);
+        return (data.length > 0)? true : false;
     }
     
     booksFromUser(userId) {

@@ -1,6 +1,6 @@
 export default class Book{
     constructor(book) {
-        this.id = book.id;
+        this.id = book.id || "";
         this.userId = book.userId;
         this.moduleCode = book.moduleCode;
         this.publisher = book.publisher;

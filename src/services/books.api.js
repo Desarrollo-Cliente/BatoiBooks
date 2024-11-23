@@ -80,10 +80,17 @@ async function getId() {
         });
 }
 
+async function bookExists(userId, moduleCode) {
+    const data = await fetch(`${url}books?userId=${userId}&moduleCode=${moduleCode}`)
+        .then(response => response.json());
+    return data;
+}
+
 export default {
     getDBBooks,
     getDBBookById,
     addDBBook,
     removeDBBook,
-    changeDBBook
+    changeDBBook,
+    bookExists
 };

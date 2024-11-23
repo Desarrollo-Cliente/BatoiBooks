@@ -31,13 +31,45 @@ export default class Controller {
             ]);
             this.view.renderBooks(this.books.data, this.eventosBook);
             this.view.renderModules(this.modules.data);
-            this.view.setBookSubmitHandler(this.handleSubmitBook.bind(this));
+
+            const bookExist = function () {
+                const userId = 2;
+                const moduleCode = document.getElementById('id-module').value;
+                debugger
+                return this.books.bookExists.bind(this)(moduleCode, userId);
+            }
+            
+            this.view.setBookSubmitHandler(this.handleSubmitBook.bind(this), () => {
+                return bookExist.call(this).then(exists => {
+                    const module = document.getElementById('id-module');
+                    if (exists) {
+                        // Manejar el caso en que el libro existe
+                        const errorInput = document.createElement('p');
+                        errorInput.classList.add('inputError');
+                        module.setCustomValidity('No puedes añadir dos libros con el mismo módulo');
+                        errorInput.textContent = module.validationMessage;
+                        module.insertAdjacentElement('afterend', errorInput);
+                        return false;
+                    } else {
+                        // Manejar el caso en que el libro no existe
+                        module.setCustomValidity('');
+                        return true;
+                    }
+                });
+            });
+
             this.view.setBookRemoveHandler(this.handleRemoveBook.bind(this));
         } catch (error) {
             this.view.mensaje('error', error.message);
         }
 
     }
+
+        // view.class.js
+    
+    
+    // controller.class.js
+   
 
     async handleSubmitBook(data) {
         const book = new Book(data);

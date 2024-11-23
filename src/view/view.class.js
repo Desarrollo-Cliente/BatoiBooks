@@ -100,20 +100,25 @@ export default class View {
         this.messages.appendChild(rendedMessage);
     }
 
-    setBookSubmitHandler(callback) {
+        // view.class.js
+    setBookSubmitHandler(callback, bookExists) {
         this.bookForm.addEventListener('submit', (event) => {
             console.log('submit');
             
-            event.preventDefault()
+            event.preventDefault();
             const formData = new FormData(this.bookForm);
             const payload = {};
             formData.forEach((value, key) => {
                 payload[key] = value;
             });
-            if (this.validateForm(event)) {
-                callback(payload);
-            }
-        })
+    
+            bookExists().then(exists => {
+                if (this.validateForm(event, exists)) {
+                    callback(payload);
+                    this.resetEditBook();
+                }
+            });
+        });
     }
 
     setBookRemoveHandler(callback) {
