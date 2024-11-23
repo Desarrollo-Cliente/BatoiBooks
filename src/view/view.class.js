@@ -9,7 +9,6 @@ export default class View {
         // this.bookForm = this.bookForm.getElementById('bookForm');
         this.messages = document.getElementById('messages');
         window.addEventListener("hashchange", this.cambioHash);
-
           
     }
 
@@ -111,7 +110,9 @@ export default class View {
             formData.forEach((value, key) => {
                 payload[key] = value;
             });
-            callback(payload)
+            if (this.validateForm(event)) {
+                callback(payload);
+            }
         })
     }
 
@@ -192,6 +193,29 @@ export default class View {
 
 
         console.log("El hash de la URL ha cambiado:", window.location.hash);
+    }
+
+
+    validateForm(event) {
+        // Validate form fields
+        const isValid = this.bookForm.checkValidity();
+        const errorInputs = this.bookForm.querySelectorAll('.inputError');
+        errorInputs.forEach(input => {
+            input.remove();
+        });
+        if (!isValid) {
+            event.preventDefault();
+            const invalidFields = this.bookForm.querySelectorAll(':invalid');
+            const firstInvalidField = invalidFields[0];
+            firstInvalidField.focus();
+            const errorMessage = firstInvalidField.validationMessage;
+            const errorInput = document.createElement('p');
+            errorInput.classList.add('inputError');
+            errorInput.textContent = errorMessage;
+            firstInvalidField.insertAdjacentElement('afterend', errorInput);
+            return false;
+        }
+        return true;
     }
 
 
