@@ -1,13 +1,11 @@
 import { createApp } from 'vue';
-import App from './App.vue';
-import router from './router/index.js';
 import { createPinia } from 'pinia';
-import './assets/styles.css'; // Archivo CSS general
+import App from './App.vue';
+import router from './router';
 
 const app = createApp(App);
 
-// Configuración de Vue Router y Pinia
-app.use(router);
 app.use(createPinia());
+app.use(router);
 
 app.mount('#app');
