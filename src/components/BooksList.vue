@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useBooksStore } from '../store/books.js';
+import BookItem from './BookItem.vue';
 
 const booksStore = useBooksStore();
 
@@ -10,52 +11,30 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <h1>Listado de Libros</h1>
+  <div id="books">
     <div v-if="booksStore.errorMessage">{{ booksStore.errorMessage }}</div>
-    <table v-if="booksStore.books.length > 0">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Module</th>
-          <th>Pages</th>
-          <th>Photo</th>
-          <th>Price</th>
-          <th>Publisher</th>
-          <th>SoldDate</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="book in booksStore.books" :key="book.id">
-          <td>{{ book.id }}</td>
-          <td>{{ book.moduleCode }}</td>
-          <td>{{ book.pages }}</td>
-          <td>{{ book.photo }}</td>
-          <td>{{ book.price }}</td>
-          <td>{{ book.publisher }}</td>
-          <td>{{ book.soldDate }}</td>
-          <td>{{ book.status }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <h1>Listado de Libros</h1>
+    <div id="list">
+      <BookItem v-for="book in booksStore.books" :key="book.id" :book="book" />
+    </div>
     <p>Total de libros: {{ booksStore.totalBooks }}</p>
   </div>
 </template>
 
 <style scoped>
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
+#list {
+  display: grid;
+  grid-template-columns: 2fr 2fr 2fr;
+  gap: 10px;
+  padding: 10px;
+  margin: 10px;
   border: 1px solid #ddd;
-  padding: 8px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-th {
-  background-color: #f4f4f4;
-  text-align: left;
+h1 {
+  text-align: center;
 }
+
 </style>

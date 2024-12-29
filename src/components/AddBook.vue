@@ -1,30 +1,209 @@
+<script setup>
+import { onMounted } from 'vue';
+import { useModulesStore } from '../store/modules.js';
+
+const modulesStore = useModulesStore();
+
+onMounted(() => {
+  modulesStore.fetchModules();
+});
+</script>
 <template>
-    <div>
-      <h1>Add Book</h1>
-      <form @submit.prevent="addBook">
-        <label for="title">Title:</label>
-        <input id="title" v-model="title" required />
-        <label for="author">Author:</label>
-        <input id="author" v-model="author" required />
-        <button type="submit">Add</button>
+  <section id="form">
+    <article>
+      <form @submit.prevent="submitForm">
+        <h2>Añadir libro</h2>
+
+        <div>
+          <label for="id-module">Módulo:</label>
+          <select v-model="form.moduleCode" id="id-module" name="moduleCode" required>
+            <option value="" disabled>Selecciona un módulo</option>
+            <option v-for="module in modulesStore.modules" :key="module.code" :value="module.code">{{ module.cliteral }}</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="publisher">Editorial:</label>
+          <input v-model="form.publisher" type="text" id="publisher" name="publisher" required>
+        </div>
+
+        <div>
+          <label for="status">Estado:</label>
+          <div id="status">
+            <label for="new">Nuevo
+              <input type="radio" id="new" name="status" value="new" v-model="form.status" required>
+            </label>
+            <label for="good">Bueno
+              <input type="radio" id="good" name="status" value="good" v-model="form.status">
+            </label>
+            <label for="damaged">Dañado
+              <input type="radio" id="damaged" name="status" value="damaged" v-model="form.status">
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label for="price">Precio:</label>
+          <input v-model.number="form.price" type="number" id="price" name="price" required min="0" step="0.01">
+        </div>
+
+        <div>
+          <label for="pages">Páginas:</label>
+          <input v-model.number="form.pages" type="number" id="pages" name="pages" required min="0">
+        </div>
+
+        <div>
+          <label for="comments">Comentarios:</label>
+          <textarea v-model="form.comments" id="comments" name="comments"></textarea>
+        </div>
+
+        <input type="submit" value="Añadir">
+        <button type="reset" @click="resetForm">Reset</button>
       </form>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "AddBook",
-    data() {
-      return {
-        title: "",
-        author: "",
+    </article>
+  </section>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      form: {
+        moduleCode: '',
+        publisher: '',
+        status: '',
+        price: 0,
+        pages: 0,
+        comments: '',
+      },
+    };
+  },
+  methods: {
+    submitForm() {
+      // Aquí puedes manejar el envío del formulario, como hacer una petición a la API o procesar los datos
+      console.log(this.form);
+      // Resetear formulario o mostrar un mensaje de éxito
+    },
+    resetForm() {
+      this.form = {
+        moduleCode: '',
+        publisher: '',
+        status: '',
+        price: 0,
+        pages: 0,
+        comments: '',
       };
     },
-    methods: {
-      async addBook() {
-        // Placeholder for add logic
-        alert(`Book added: ${this.title} by ${this.author}`);
-      },
-    },
-  };
-  </script>
+  },
+};
+</script>
+
+<style scoped>
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  background-color: #333;
+  padding: 2em;
+  border-radius: 8px;
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+#status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.5em;
+  border-radius: 8px;
+  flex-direction: row;
+}
+
+label {
+  font-weight: bold;
+  color: #888;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  padding: 0.5em;
+  border-radius: 4px;
+  border: 1px solid #555;
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+input[type="radio"] {
+  margin-right: 0.5em;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.25s;
+}
+
+button:hover {
+  background-color: #333;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+#remove {
+  background-color: #f44336;
+  color: white;
+}
+#remove:hover {
+  background-color: #e41e1e;
+}
+
+.remove-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #333;
+  padding: 1.5em;
+  border-radius: 8px;
+  color: #ffffff;
+  margin: 1em 0;
+  text-align: center;
+}
+
+.remove-container h2 {
+  color: #ff4444;
+  font-size: 1.5em;
+}
+
+#bookForm {
+  input[type="submit"] {
+    background-color: green;
+    color: #333;
+    transition: all 0.3s;
+    border : none;
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  input[type="submit"]:hover {
+    background-color: #4caf50;
+    color: #fff;
+  }
+}
+</style>
