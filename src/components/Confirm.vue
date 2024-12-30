@@ -1,5 +1,6 @@
 <script setup>
 import { defineProps, defineEmits, reactive, watch } from 'vue';
+import ErrorMessage from './ErrorMessage.vue'; // Importa el componente de error
 
 const props = defineProps({
   show: {
@@ -23,26 +24,34 @@ const props = defineProps({
 const emit = defineEmits(['confirm', 'cancel']);
 
 const localInputs = reactive([]);
-
 const syncInputs = () => {
   localInputs.splice(0, localInputs.length, ...props.inputs.map(input => ({ ...input })));
 };
-
 watch(() => props.inputs, syncInputs, { immediate: true });
+
+const errorMessage = reactive({
+  show: false,
+  message: ''
+});
 
 const handleConfirm = () => {
   if (
-    localInputs.length !== 0 && 
+    localInputs.length !== 0 &&
     localInputs.every((input) => input.result === input.check)
   ) {
     emit('confirm');
   } else {
-    emit('cancel');
+    errorMessage.show = true;
+    errorMessage.message = 'Los datos ingresados no son correctos, por favor revisa.';
   }
 };
 
 const handleCancel = () => {
   emit('cancel');
+};
+
+const closeErrorMessage = () => {
+  errorMessage.show = false;
 };
 </script>
 
@@ -51,14 +60,11 @@ const handleCancel = () => {
     <div class="modal">
       <h2 class="modal-title">{{ props.title }}</h2>
       <p class="modal-message">{{ props.message }}</p>
-      <div v-if="localInputs.length !== 0">
+      <div id="inputs" v-if="localInputs.length !== 0">
         <div v-for="input in localInputs" :key="input.key">
           <label :for="input.key">{{ input.label }}</label>
-          <input 
-            :id="input.key" 
-            :placeholder="input.placeholder" 
-            v-model="input.result" 
-          />
+          <input :id="input.key" :placeholder="input.check" v-model="input.result" />
+          <span>{{ input.check }}</span>
         </div>
       </div>
       <div class="modal-actions">
@@ -67,6 +73,8 @@ const handleCancel = () => {
       </div>
     </div>
   </div>
+
+  <ErrorMessage :message="errorMessage.message" :show="errorMessage.show" @close="closeErrorMessage" />
 </template>
 
 <style scoped>
@@ -107,6 +115,23 @@ const handleCancel = () => {
   display: flex;
   justify-content: space-between;
   gap: 10px;
+}
+
+#inputs {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+
+  div{
+    display: grid;
+    grid-template-columns: 1fr 2fr 0.5fr;
+    margin-bottom: 10px;
+    text-align: center;
+
+    span{
+      color: #999;
+    }
+  }
 }
 
 .btn-confirm {
