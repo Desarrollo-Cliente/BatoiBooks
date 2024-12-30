@@ -7,6 +7,7 @@ export const useBooksStore = defineStore('books', {
     errorMessage: '',
   }),
   actions: {
+    // Obtiene la lista de libros
     async fetchBooks() {
       try {
         const response = await apiClient.get('/books'); // Endpoint de los libros
@@ -16,8 +17,19 @@ export const useBooksStore = defineStore('books', {
         console.error(error);
       }
     },
+    // Elimina un libro por ID
+    async removeBook(id) {
+      try {
+        await apiClient.delete(`/books/${id}`); // Endpoint para eliminar un libro
+        this.books = this.books.filter(book => book.id !== id);
+      } catch (error) {
+        this.errorMessage = 'Error al eliminar el libro. Inténtalo de nuevo.';
+        console.error(error);
+      }
+    },
   },
   getters: {
+    // Calcula el total de libros
     totalBooks(state) {
       return state.books.length;
     },

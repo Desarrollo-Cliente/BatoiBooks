@@ -99,6 +99,10 @@ export default {
 </script>
 
 <style scoped>
+#form{
+  margin-top: 20px;
+}
+
 form {
   display: flex;
   flex-direction: column;
