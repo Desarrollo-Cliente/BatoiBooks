@@ -1,10 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useBooksStore } from '../store/books.js';
+import { useMessagesStore } from '../store/messages.js';
 import BookItem from './BookItem.vue';
 import Confirm from './Confirm.vue';
 
 const booksStore = useBooksStore();
+const messagesStore = useMessagesStore();
 
 const showModal = ref(false);
 const selectedBookId = ref(null);
@@ -35,9 +37,14 @@ const handleDelete = (id) => {
 };
 
 const confirmDelete = () => {
-  booksStore.removeBook(selectedBookId.value);
-  showModal.value = false;
-  selectedBookId.value = null;
+  try {
+    booksStore.removeBook(selectedBookId.value);
+    messagesStore.addMessage('Borrado exitosamente!', 'success');
+    showModal.value = false;
+    selectedBookId.value = null;
+  } catch (error) {
+    messagesStore.addMessage('¡Hubo un error al procesar la solicitud!: ' + error, 'error');
+  }
 };
 
 const cancelDelete = () => {

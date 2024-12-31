@@ -1,13 +1,41 @@
 <script setup>
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useModulesStore } from '../store/modules.js';
+import { useBooksStore } from '../store/books.js';
 
 const modulesStore = useModulesStore();
+const booksStore = useBooksStore();
+
+const form = ref({
+  moduleCode: '',
+  publisher: '',
+  status: '',
+  price: 0,
+  pages: 0,
+  comments: '',
+});
 
 onMounted(() => {
   modulesStore.fetchModules();
 });
+
+const submitForm = () => {
+  booksStore.addBook({ ...form.value });
+  resetForm();
+};
+
+const resetForm = () => {
+  form.value = {
+    moduleCode: '',
+    publisher: '',
+    status: '',
+    price: 0,
+    pages: 0,
+    comments: '',
+  };
+};
 </script>
+
 <template>
   <section id="form">
     <article>
@@ -64,42 +92,8 @@ onMounted(() => {
   </section>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      form: {
-        moduleCode: '',
-        publisher: '',
-        status: '',
-        price: 0,
-        pages: 0,
-        comments: '',
-      },
-    };
-  },
-  methods: {
-    submitForm() {
-      // Aquí puedes manejar el envío del formulario, como hacer una petición a la API o procesar los datos
-      console.log(this.form);
-      // Resetear formulario o mostrar un mensaje de éxito
-    },
-    resetForm() {
-      this.form = {
-        moduleCode: '',
-        publisher: '',
-        status: '',
-        price: 0,
-        pages: 0,
-        comments: '',
-      };
-    },
-  },
-};
-</script>
-
 <style scoped>
-#form{
+#form {
   margin-top: 20px;
 }
 
@@ -200,7 +194,7 @@ button:focus-visible {
     background-color: green;
     color: #333;
     transition: all 0.3s;
-    border : none;
+    border: none;
     border-radius: 10px;
     padding: 10px;
   }
