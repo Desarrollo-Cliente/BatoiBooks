@@ -1,55 +1,72 @@
-<script setup>
+<script>
 import { ref, onMounted } from 'vue';
 import { useBooksStore } from '../store/books.js';
 import { useMessagesStore } from '../store/messages.js';
+
 import BookItem from './BookItem.vue';
 import Confirm from './Confirm.vue';
 
-const booksStore = useBooksStore();
-const messagesStore = useMessagesStore();
-
-const showModal = ref(false);
-const selectedBookId = ref(null);
-
-const inputsconfirm = ref([]);
-
-onMounted(() => {
-  booksStore.fetchBooks();
-});
-
-const handleDelete = (id) => {
-  selectedBookId.value = id;
-  showModal.value = true;
-
-  const book = booksStore.books.find((book) => book.id === id);
-  inputsconfirm.value = [
-    {
-      key: `module-${id}`,
-      label: 'Modulo: ',
-      check: book.moduleCode,
+export default {
+  components: {
+    BookItem,
+    Confirm,
+  },
+  setup() {
+    const booksStore = useBooksStore();
+    const messagesStore = useMessagesStore();
+    const showModal = ref(false);
+    const selectedBookId = ref(null);
+    const inputsconfirm = ref([]);
+    onMounted(() => {
+      booksStore.fetchBooks();
+    });
+    return {
+      booksStore,
+      messagesStore,
+      showModal,
+      selectedBookId,
+      inputsconfirm,
+    };
+  },
+  methods: {
+    handleDelete(id) {
+      this.selectedBookId = id;
+      this.showModal = true;
+      const book = this.booksStore.books.find((book) => book.id === id);
+      this.inputsconfirm = [
+        {
+          key: `module-${id}`,
+          label: 'Modulo: ',
+          check: book.moduleCode,
+        },
+        {
+          key: `id-${id}`,
+          label: 'Id: ',
+          check: book.id,
+        },
+      ];
     },
-    {
-      key: `id-${id}`,
-      label: 'Id: ',
-      check: book.id,
+    confirmDelete() {
+      try {
+        this.booksStore.removeBook(this.selectedBookId);
+        this.messagesStore.addMessage('Borrado exitosamente!', 'success');
+        this.showModal = false;
+        this.selectedBookId = null;
+      } catch (error) {
+        this.messagesStore.addMessage(
+          '¡Hubo un error al procesar la solicitud!: ' + error,
+          'error'
+        );
+      }
     },
-  ];
-};
-
-const confirmDelete = () => {
-  try {
-    booksStore.removeBook(selectedBookId.value);
-    messagesStore.addMessage('Borrado exitosamente!', 'success');
-    showModal.value = false;
-    selectedBookId.value = null;
-  } catch (error) {
-    messagesStore.addMessage('¡Hubo un error al procesar la solicitud!: ' + error, 'error');
-  }
-};
-
-const cancelDelete = () => {
-  showModal.value = false;
-  selectedBookId.value = null;
+    cancelDelete() {
+      this.showModal = false;
+      this.selectedBookId = null;
+    },
+    editBook(book) {
+      this.$router.push({ path: `/edit/${book.id}` });
+    },
+  },
 };
 </script>
 
@@ -65,6 +82,7 @@ const cancelDelete = () => {
         :key="book.id" 
         :book="book" 
         @delete-book="handleDelete" 
+        @edit-book="editBook"
       />
     </div>
     <p>Total de libros: {{ booksStore.totalBooks }}</p>

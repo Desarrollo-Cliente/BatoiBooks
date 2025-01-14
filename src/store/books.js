@@ -16,6 +16,16 @@ export const useBooksStore = defineStore('books', {
         console.error(error);
       }
     },
+    async fetchBook(id) {
+      try {
+        const response =  await apiClient.get(`/books/${id}`);
+        
+        return response.data;
+      } catch (error) {
+      this.errorMessage = 'Error al cargar el libro. Inténtalo de nuevo.';
+      console.error(error);
+      }
+    },
     async removeBook(id) {
       try {
         await apiClient.delete(`/books/${id}`);
@@ -35,6 +45,20 @@ export const useBooksStore = defineStore('books', {
         console.error(error);
       }
     },
+    viewEdit(book) {
+      this.$router.push({ name: 'edit', params: { id: book.id } });
+    },
+    async updateBook(book) {
+      
+      try {
+        await apiClient.put(`/books/${book.id}`, book);
+        const index = this.books.findIndex(b => b.id === book.id);
+        this.books[index] = book;
+      } catch (error) {
+        this.errorMessage = 'Error al actualizar el libro. Inténtalo de nuevo.';
+        console.error(error);
+      }
+    }
   },
   getters: {
     totalBooks(state) {

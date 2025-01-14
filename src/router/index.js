@@ -7,6 +7,7 @@ import AppAbout from '../components/AppAbout.vue';
 const routes = [
   { path: '/', component: BooksList },
   { path: '/add', component: AddBook },
+  { path: '/edit/:id', component: AddBook, props: true },
   { path: '/cart', component: AppCart },
   { path: '/about', component: AppAbout },
 ];
