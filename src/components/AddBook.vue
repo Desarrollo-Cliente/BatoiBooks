@@ -86,6 +86,14 @@ export default {
       }
     }
   },
+  watch: {
+    $route(to, from) {
+      if (to.path === '/add') {
+        this.LBL = this.LBL_ADD;
+        this.resetForm();
+      }
+    },
+  },
   setup() {
     return {
       router: useRouter(),

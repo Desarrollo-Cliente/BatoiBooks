@@ -21,5 +21,8 @@ export const useModulesStore = defineStore('modules', {
     totalModules(state) {
       return state.modules.length;
     },
+    moduleById: (state) => (id) => {
+      return state.modules.find((module) => module.id === id);
+    },
   },
 });

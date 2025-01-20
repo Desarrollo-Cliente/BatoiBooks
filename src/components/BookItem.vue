@@ -6,7 +6,7 @@
         class="card-img"
       />
       <div class="card-content">
-        <h3>{{ book.moduleCode }} ({{ book.id }})</h3>
+        <h3>{{ getModule }}</h3>
         <h4>Editorial: {{ book.publisher }}</h4>
         <p>Precio: {{ book.price }}€</p>
         <p>Páginas: {{ book.pages }}</p>
@@ -29,6 +29,8 @@
   </template>
   
   <script>
+  import { useModulesStore } from '../store/modules.js';
+
   export default {
     name: "BookItem",
     props: {
@@ -40,6 +42,10 @@
     computed: {
       bookImage() {
         return "https://dummyimage.com/100x100/fff/000"; // Imagen por defecto
+      },
+      getModule() {
+        const modulesStore = useModulesStore();
+        return modulesStore.moduleById(this.book.moduleCode);
       },
     },
   };
