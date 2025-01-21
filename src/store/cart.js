@@ -1,9 +1,8 @@
 import { defineStore } from 'pinia';
-import apiClient from '../services/api.js';
 
 export const useCartStore = defineStore('cart', {
   state: () => ({
-    books: [],
+    books: JSON.parse(localStorage.getItem('cartBooks')) || [],
     errorMessage: '',
   }),
   actions: {
@@ -15,6 +14,7 @@ export const useCartStore = defineStore('cart', {
       }
       try {
         this.books = this.books.filter(book => idBook !== book.id);
+        this.saveToLocalStorage();
       } catch (error) {
         this.errorMessage = 'Error al eliminar el libro. Inténtalo de nuevo.';
         console.error(error);
@@ -32,6 +32,7 @@ export const useCartStore = defineStore('cart', {
       }
       try {
         this.books.push(book);
+        this.saveToLocalStorage();
       } catch (error) {
         this.errorMessage = 'Error al añadir el libro. Inténtalo de nuevo.';
         console.error(error);
@@ -39,7 +40,11 @@ export const useCartStore = defineStore('cart', {
     },
     clear(){
       this.books = [];
-    }
+      this.saveToLocalStorage();
+    },
+    saveToLocalStorage() {
+      localStorage.setItem('cartBooks', JSON.stringify(this.books));
+    },
   },
   getters: {
     totalBooks(state) {
@@ -48,6 +53,5 @@ export const useCartStore = defineStore('cart', {
     totalPrice() {
       return this.books.reduce((acc, book) => acc + book.price, 0).toFixed(2);
     },
-    
   },
 });
