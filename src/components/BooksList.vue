@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useBooksStore } from '../store/books.js';
 import { useMessagesStore } from '../store/messages.js';
+import { useCartStore } from '../store/cart.js';
 
 import BookItem from './BookItem.vue';
 import Confirm from './Confirm.vue';
@@ -13,6 +14,7 @@ export default {
   },
   setup() {
     const booksStore = useBooksStore();
+    const cartStore = useCartStore();
     const messagesStore = useMessagesStore();
     const showModal = ref(false);
     const selectedBookId = ref(null);
@@ -22,6 +24,7 @@ export default {
     });
     return {
       booksStore,
+      cartStore,
       messagesStore,
       showModal,
       selectedBookId,
@@ -66,6 +69,13 @@ export default {
     editBook(book) {
       this.$router.push({ path: `/edit/${book.id}` });
     },
+    addToCart(book) {
+      this.cartStore.addBook(book);
+      this.messagesStore.addMessage('Libro añadido al carrito', 'success');
+    },
+    inCart(id) {
+      return this.cartStore.books.some((book) => book.id === id);
+    },
   },
 };
 </script>
@@ -81,9 +91,17 @@ export default {
         v-for="book in booksStore.books" 
         :key="book.id" 
         :book="book" 
-        @delete-book="handleDelete" 
-        @edit-book="editBook"
-      />
+      >
+        <button class="addCart" @click="addToCart(book)" :disabled="inCart(book.id)">
+          <i class="bi bi-bag-plus"></i>
+        </button>
+        <button class="edit" @click="editBook(book)">
+          <i class="bi bi-pencil-square"></i>
+        </button>
+        <button class="delete" @click="handleDelete(book.id)">
+          <i class="bi bi-trash-fill"></i>
+        </button>
+      </BookItem>
     </div>
     <p>Total de libros: {{ booksStore.totalBooks }}</p>
 
