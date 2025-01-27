@@ -63,7 +63,15 @@ export default {
           this.booksStore.updateBook(this.form);
           this.messagesStore.addMessage('¡Editado exitosamente!', 'success');
         } else {
-          this.booksStore.addBook({ ...this.form });
+          if (this.booksStore.books.some((book) =>  book.userId == 2 && 
+              book.moduleCode == this.form.moduleCode &&
+              book.publisher == this.form.publisher && book.price == this.form.price)) {
+              // simula que es el mismo usua
+            this.messagesStore.addMessage('¡El libro ya existe, no puedes crearlo de nuevo!', 'error');
+            return;
+          }
+
+          this.booksStore.addBook({ ...this.form, userId: 2 });
           this.messagesStore.addMessage('¡Añadido exitosamente!', 'success');
         }
         this.router.push('/');
