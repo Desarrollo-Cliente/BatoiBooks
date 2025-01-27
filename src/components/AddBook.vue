@@ -4,9 +4,24 @@ import { useRouter, useRoute } from 'vue-router';
 import { useModulesStore } from '../store/modules.js';
 import { useBooksStore } from '../store/books.js';
 import { useMessagesStore } from '../store/messages.js';
+import { Form, Field, ErrorMessage } from "vee-validate";
+import * as yup from 'yup';
 
 export default {
+  components: {
+    Form,
+    Field,
+    ErrorMessage,
+  },
   data() {
+    const mySchema = yup.object({
+      moduleCode: yup.string().required('El modulo es obligatorio.'),
+      publisher: yup.string().required('El editorial es obligatorio.'),
+      status: yup.string().required('El estado es obligatorio.'),
+      price: yup.number('El precio tiene que ser u numero.').required('El precio es obligatorio.').min(0, 'El precio no puede ser negativo.'),
+      pages: yup.number('El numero de paginas tiene que ser u numero.').required('El numero de paginas es obligatorio.').min(0, 'El numero de paginas no puede ser negativo.'),
+      comments: yup.string(),
+    });
     return {
       LBL_ADD: { titulo: 'Añadir libro', btn: 'Añadir' },
       LBL_EDIT: { titulo: 'Editar libro', btn: 'Editar' },
@@ -21,6 +36,7 @@ export default {
         comments: '',
       },
       bookToEdit: false,
+      mySchema
     };
   },
   methods: {
@@ -40,6 +56,8 @@ export default {
       }
     },
     async submitForm() {
+      debugger
+      
       try {
         if (this.LBL === this.LBL_EDIT) {
           this.booksStore.updateBook(this.form);
@@ -106,28 +124,27 @@ export default {
 };
 </script>
 
-
-
-
 <template>
   <section id="form">
     <article>
-      <form @submit.prevent="submitForm">
+      <Form @submit="submitForm" :validation-schema="mySchema">
         <h2>{{ LBL.titulo }}</h2>
 
         <div>
           <label for="id-module">Módulo:</label>
-          <select v-model="form.moduleCode" id="id-module" name="moduleCode" required>
+          <Field v-model="form.moduleCode" id="id-module" name="moduleCode" as="select" required>
             <option value="" disabled>Selecciona un módulo</option>
             <option v-for="module in modulesStore.modules" :key="module.code" :value="module.code">
               {{ module.cliteral }}
             </option>
-          </select>
+          </Field>
+          <ErrorMessage name="moduleCode" />
         </div>
 
         <div>
           <label for="publisher">Editorial:</label>
-          <input v-model="form.publisher" type="text" id="publisher" name="publisher" required />
+          <Field v-model="form.publisher" id="publisher" name="publisher" type="text" required />
+          <ErrorMessage name="publisher" />
         </div>
 
         <div>
@@ -135,37 +152,41 @@ export default {
           <div id="status">
             <label for="new">
               Nuevo
-              <input type="radio" id="new" name="status" value="new" v-model="form.status" required />
+              <Field type="radio" id="new" name="status" value="new" v-model="form.status" required />
             </label>
             <label for="good">
               Bueno
-              <input type="radio" id="good" name="status" value="good" v-model="form.status" />
+              <Field type="radio" id="good" name="status" value="good" v-model="form.status" />
             </label>
             <label for="damaged">
               Dañado
-              <input type="radio" id="damaged" name="status" value="damaged" v-model="form.status" />
+              <Field type="radio" id="damaged" name="status" value="damaged" v-model="form.status" />
             </label>
           </div>
+          <ErrorMessage name="status" />
         </div>
 
         <div>
           <label for="price">Precio:</label>
-          <input v-model.number="form.price" type="number" id="price" name="price" required min="0" step="0.01" />
+          <Field v-model.number="form.price" id="price" name="price" type="number" required min="0" step="0.01" />
+          <ErrorMessage name="price" />
         </div>
 
         <div>
           <label for="pages">Páginas:</label>
-          <input v-model.number="form.pages" type="number" id="pages" name="pages" required min="0" />
+          <Field v-model.number="form.pages" id="pages" name="pages" type="number" required min="0" />
+          <ErrorMessage name="pages" />
         </div>
 
         <div>
           <label for="comments">Comentarios:</label>
-          <textarea v-model="form.comments" id="comments" name="comments"></textarea>
+          <Field v-model="form.comments" id="comments" name="comments" as="textarea" />
+          <ErrorMessage name="comments" />
         </div>
 
         <button type="submit">{{ LBL.btn }}</button>
         <button type="button" @click="resetForm">Reset</button>
-      </form>
+      </Form>
     </article>
   </section>
 </template>
